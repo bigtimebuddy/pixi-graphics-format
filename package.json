@@ -1,0 +1,71 @@
+{
+  "name": "pixi-graphics-format",
+  "version": "1.0.0",
+  "description": "PixiJS Graphics file format and Loader middleware",
+  "main": "dist/pixi-graphics-format.min.js",
+  "module": "dist/pixi-graphics-format.es.min.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "npm run unit-test",
+    "unit-test": "floss --path=test/index.js",
+    "precoverage": "npm run build:dev -- -o coverage/pixi-graphics-format.js -f cjs",
+    "coverage": "floss --path=test/coverage.js -c \"coverage/pixi-graphics-format.js\" -s",
+    "clean": "rimraf dist/**",
+    "start": "npm run watch",
+    "watch": "npm run build:dev -- --watch",
+    "lint": "tslint test/*.js src/**.ts rollup.config.js -c tslint.json --format stylish --fix",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "npm run build:dev && npm run build:prod && npm run build:es:dev && npm run build:es:prod",
+    "build:dev": "rollup -c --environment BUILD:dev",
+    "build:prod": "rollup -c --environment BUILD:prod",
+    "build:es:dev": "npm run build:dev -- -f es -o dist/pixi-graphics-format.es.js",
+    "build:es:prod": "npm run build:prod -- -f es -o dist/pixi-graphics-format.es.min.js",
+    "publish:patch": "npm version patch && npm run publish:skip",
+    "publish:minor": "npm version minor && npm run publish:skip",
+    "publish:major": "npm version major && npm run publish:skip",
+    "publish:skip": "npm test && npm publish",
+    "postpublish": "npm run deploy && git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bigtimebuddy/pixi-graphics-format.git"
+  },
+  "keywords": [
+    "graphics",
+    "pixi.js",
+    "pixijs",
+    "pixi",
+    "vector",
+    "webgl"
+  ],
+  "author": "Matt Karl <matt@mattkarl.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bigtimebuddy/pixi-graphics-format/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/bigtimebuddy/pixi-graphics-format#readme",
+  "peerDependencies": {
+    "pixi.js": "^4.3.4"
+  },
+  "devDependencies": {
+    "@types/es6-shim": "^0.31.34",
+    "@types/node": "^8.0.19",
+    "@types/pixi.js": "^4.5.2",
+    "electron": "^1.6.11",
+    "floss": "^2.1.2",
+    "pixi.js": "^4.5.4",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.45.2",
+    "rollup-plugin-commonjs": "^8.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.5.0",
+    "rollup-plugin-uglify-es": "0.0.1",
+    "rollup-watch": "^4.3.1",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.2"
+  }
+}
