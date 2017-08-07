@@ -4,19 +4,17 @@ import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import pkg from "./package.json";
 
-const prod = process.env.BUILD === "prod";
-const suffix = prod ? ".min" : "";
 const plugins = [
     typescript(),
     resolve({ jsnext: true }),
     commonjs(),
+    uglify({
+        output: {
+            comments: true,
+        },
+    }),
 ];
 const compiled = (new Date()).toUTCString().replace(/GMT/g, "UTC");
-
-// Minify output for production
-if (prod) {
-    plugins.push(uglify());
-}
 
 const banner = `/*!
  * ${pkg.name} - v${pkg.version}
@@ -37,7 +35,7 @@ export default {
     moduleName: "__pixiGraphics",
     intro: 'if (typeof PIXI === "undefined") { throw "PixiJS required"; }',
     banner,
-    dest: `dist/pixi-graphics${suffix}.js`,
+    dest: `dist/pixi-graphics.js`,
     format: "umd",
     plugins,
 };

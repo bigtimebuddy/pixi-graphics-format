@@ -12,8 +12,8 @@ PIXI.loaders.Loader.addPixiMiddleware(GraphicsFormat.middleware);
 
 // Load PGF files as text with XHR
 PIXI.loaders.Resource.setExtensionXhrType(
-    GraphicsFormat.EXTENSION, 
-    PIXI.loaders.Resource.XHR_RESPONSE_TYPE.TEXT
+    GraphicsFormat.EXTENSION,
+    PIXI.loaders.Resource.XHR_RESPONSE_TYPE.TEXT,
 );
 
 if (!(PIXI as any).GraphicsFormat) {

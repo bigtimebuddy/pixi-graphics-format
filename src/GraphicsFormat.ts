@@ -36,7 +36,7 @@ export default class GraphicsFormat {
      * @default 'pgf'
      */
     public static get EXTENSION(): string {
-        return 'pgf';
+        return "pgf";
     }
 
     /**
@@ -100,7 +100,7 @@ export default class GraphicsFormat {
      */
     public static middleware(): (resource: PIXI.loaders.Resource, next: () => void) => void {
         return function graphicsFormatParser(resource: PIXI.loaders.Resource, next: () => void): void {
-            if (resource.extension === 'pgf') {
+            if (resource.extension === "pgf") {
                 (resource as any).graphics = GraphicsFormat.parse(resource.data as string);
             }
             next();
