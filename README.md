@@ -48,3 +48,7 @@ PIXI.loader.load((loader, resources) => {
     app.stage.addChild(resources.example.graphics); 
 });
 ```
+
+## License
+
+MIT License.

@@ -1,0 +1,43 @@
+{
+    "tags": {
+        "allowUnknownTags": false
+    },
+    "source": {
+        "include": [
+            "./.docs/"
+        ],
+        "includePattern": ".+\\.js?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": false
+        },
+        "applicationName": "PGF",
+        "footer": "Made with ♥ by Matt Karl (github.com/bigtimebuddy)",
+        "copyright": "PIXI Copyright &copy; 2017 Matt Karl.",
+        "linenums": false,
+        "meta": {
+            "title": "pixi-graphics-format API Documentation",
+            "description": "Documentation for pixi-graphics-format library",
+            "keyword": "pixi, pixijs, graphics, webgl, file, format, extension, pgf"
+        }
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": false
+    },
+    "opts": {
+        "encoding": "utf8",
+        "recurse": true,
+        "private": false,
+        "lenient": true,
+        "destination": "./docs",
+        "template": "./node_modules/jaguarjs-jsdoc"
+    }
+}

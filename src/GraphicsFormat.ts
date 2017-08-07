@@ -10,6 +10,21 @@ export default class GraphicsFormat {
      * @name PIXI.GraphicsFormat.COMMANDS
      * @static
      * @type {Object}
+     * @property {string} c closePath
+     * @property {string} h addHole
+     * @property {string} m moveTo
+     * @property {string} l lineTo
+     * @property {string} q quadraticCurveTo
+     * @property {string} b bezierCurveTo
+     * @property {string} f beginFill
+     * @property {string} s lineStyle
+     * @property {string} dr drawRect
+     * @property {string} rr drawRoundedRect
+     * @property {string} rc drawRoundedRect
+     * @property {string} dc drawCircle
+     * @property {string} ar arc
+     * @property {string} at arcTo
+     * @property {string} de drawEllipse
      */
     public static COMMANDS: {[id: string]: string} = {
         c: "closePath",
@@ -94,6 +109,7 @@ export default class GraphicsFormat {
      * Middleware to use for PIXI.loader
      * @static
      * @method PIXI.GraphicsFormat.middleware
+     * @private
      * @param {string} contents Commands to draw
      * @param {PIXI.Graphics} [graphics] Graphics object to use, if none is supplied will create new object.
      * @return {PIXI.Graphics} New graphics object created
