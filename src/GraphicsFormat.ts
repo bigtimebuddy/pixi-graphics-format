@@ -1,5 +1,5 @@
 /**
- * Parse *.pixi files for graphics
+ * Parse *.pgf files for graphics
  * @class GraphicsFormat
  * @memberof PIXI
  */
@@ -28,6 +28,16 @@ export default class GraphicsFormat {
         at: "arcTo",
         de: "drawEllipse",
     };
+
+    /**
+     * The extension for PIXI Graphics
+     * @readonly
+     * @static
+     * @default 'pgf'
+     */
+    public static get EXTENSION(): string {
+        return 'pgf';
+    }
 
     /**
      * Parse a string as a Graphics Object
@@ -90,7 +100,7 @@ export default class GraphicsFormat {
      */
     public static middleware(): (resource: PIXI.loaders.Resource, next: () => void) => void {
         return function graphicsFormatParser(resource: PIXI.loaders.Resource, next: () => void): void {
-            if (resource.url.search(/\.pixi([\?\#].*)?$/)) {
+            if (resource.extension === 'pgf') {
                 (resource as any).graphics = GraphicsFormat.parse(resource.data as string);
             }
             next();

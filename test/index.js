@@ -40,7 +40,7 @@ describe("PIXI.GraphicsFormat", function() {
 
     it("should load with PIXI.loader", function(done) {
         this.slow(200);
-        PIXI.loader.add("gfx", path.resolve(__dirname, "example.pixi"));
+        PIXI.loader.add("gfx", path.resolve(__dirname, "example.pgf"));
         PIXI.loader.load((loader, resources) => {
             expect(resources.gfx).to.be.okay;
             expect(resources.gfx.graphics).is.instanceof(PIXI.Graphics);
