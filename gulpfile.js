@@ -8,15 +8,3 @@ gulp.task('comments', function()
         .pipe(comments())
         .pipe(gulp.dest('.docs'));
 });
-
-gulp.task('deploy', function(done)
-{
-    const options = {
-        src: [
-            'dist/**',
-            'examples/**',
-            'docs/**'
-        ]
-    };
-    ghpages.publish(__dirname, options, done);
-});
