@@ -7,13 +7,18 @@ describe("PIXI.GraphicsFormat", function() {
 
     before(function() {
         PIXI.utils.skipHello();
-        const app = new PIXI.Application(200, 200);
+        const app = new PIXI.Application({
+            width: 300,
+            height: 300,
+            backgroundColor: 0xffffff
+        });
         document.body.appendChild(app.view);
         this.app = app;
     });
 
     afterEach(function() {
         PIXI.loader.reset();
+        this.app.stage.removeChildren();
     });
 
     after(function() {
@@ -51,6 +56,34 @@ describe("PIXI.GraphicsFormat", function() {
             expect(bounds.width).to.equal(100);
             expect(bounds.height).to.equal(100);
             expect(graphics.fillColor).to.equal(0xFFFF00);
+            done();
+        });
+    });
+
+    it("should stringify the graphic", function(done) {
+        this.slow(200);
+        PIXI.loader.add("shapes", path.resolve(__dirname, "shapes.pgf"));
+        PIXI.loader.load((loader, resources) => {
+            const {graphics} = resources.shapes;
+            const data = PIXI.GraphicsFormat.stringify(graphics);
+            // console.log('%cfile:%c\n' + resources.shapes.data, 'font-weight:bold', 'font-weight:normal');
+            // console.log('%cstringify:%c\n' + data, 'font-weight:bold', 'font-weight:normal');
+            this.app.stage.addChild(graphics);
+            expect(data).to.equal(resources.shapes.data);
+            done();
+        });
+    });
+
+    it("should stringify the graphic with holes", function(done) {
+        this.slow(200);
+        PIXI.loader.add("holes", path.resolve(__dirname, "holes.pgf"));
+        PIXI.loader.load((loader, resources) => {
+            const {graphics} = resources.holes;
+            const data = PIXI.GraphicsFormat.stringify(graphics);
+            // console.log('%cfile:%c\n' + resources.holes.data, 'font-weight:bold', 'font-weight:normal');
+            // console.log('%cstringify:%c\n' + data, 'font-weight:bold', 'font-weight:normal');
+            this.app.stage.addChild(graphics);
+            expect(data).to.equal(resources.holes.data);
             done();
         });
     });

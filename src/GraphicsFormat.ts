@@ -106,6 +106,114 @@ export default class GraphicsFormat {
     }
 
     /**
+     * Convert the graphic to a string
+     * @static
+     * @method PIXI.GraphicsFormat.stringify
+     * @param {PIXI.Graphics} graphics Object to convert to string
+     * @return {string} Graphic serialized as string
+     */
+    public static stringify(graphics:PIXI.Graphics): string {
+
+        // These are protected, which is why they are cast as 'any'
+        const graphicsData:PIXI.GraphicsData[] = (graphics as any).graphicsData;
+
+        let buffer = '';
+        let fillColor = 0x0;
+        let fillAlpha = 1;
+        let lineWidth = 0;
+        let lineColor = 0;
+        let lineAlpha = 1;
+
+        for (let j = 0; j < graphicsData.length; j++) {
+
+            const data = graphicsData[j];
+
+            if (data.fillColor !== fillColor || data.fillAlpha !== fillAlpha) {
+                fillColor = data.fillColor;
+                fillAlpha = data.fillAlpha;
+                buffer += `f #${GraphicsFormat.uintToHex(fillColor)} `;
+                if (fillAlpha !== 1) {
+                    buffer += `${fillAlpha} `;
+                }
+            }
+            if (data.lineWidth > 0 && (data.lineWidth !== lineWidth || data.lineColor !== lineColor || data.lineAlpha !== lineAlpha)) {
+                lineWidth = data.lineWidth;
+                lineColor = data.lineColor;
+                lineAlpha = data.lineAlpha;
+                buffer += `s ${lineWidth} `;
+                if (lineColor > 0 || lineAlpha !== 1) {
+                    buffer += `#${GraphicsFormat.uintToHex(lineColor)} `;
+                }
+                if (lineAlpha !== 1) {
+                    buffer += `${lineAlpha} `;
+                }
+            }
+
+            const {shape} = data;
+            const holes:PIXI.Polygon[] = (data as any).holes; // "holes" is protected
+
+            if (shape instanceof PIXI.Rectangle) {
+                buffer += `dr ${shape.x} ${shape.y} ${shape.width} ${shape.height} c `;
+            }
+            else if (shape instanceof PIXI.Ellipse) {
+                buffer += `de ${shape.x} ${shape.y} ${shape.width} ${shape.height} c `;
+            }
+            else if (shape instanceof PIXI.Circle) {
+                buffer += `dc ${shape.x} ${shape.y} ${shape.radius} c `;
+            }
+            else if (shape instanceof PIXI.Polygon) {
+
+                const {points} = shape;
+                const len = points.length;
+
+                // Check to see if the path is closed (first point is last point)
+                const closed = points[0] === points[len - 2] && points[1] === points[len - 1];
+                console.log("holes", holes);
+                const numPoints = closed && holes.length === 0 ? (len / 2) - 1 : len / 2;
+
+                for (let i = 0; i < numPoints; i++) {
+                    const x = shape.points[i * 2];
+                    const y = shape.points[(i * 2) + 1];                    
+                    buffer += `${i === 0 ? 'm' : 'l'} ${x} ${y} `;
+                }
+
+                // Check for holes and add them before closing the path
+                for (let k = 0; k < holes.length; k++) {
+                    const hole = holes[k];
+                    const len = hole.points.length / 2;
+                    for (let l = 0; l < len; l++) {
+                        const x = hole.points[l * 2];
+                        const y = hole.points[(l * 2) + 1];                 
+                        buffer += `${l === 0 ? 'm' : 'l'} ${x} ${y} `;
+                    }
+                    buffer += 'h ';
+                }
+                if (closed) {
+                    buffer += 'c ';
+                }
+            }
+        }
+        return buffer.trim();
+    }
+
+    /**
+     * Optimize 8 bit colors to be shorthand hex values (e.g., "#ffcc99" => "#fc9")
+     * @static
+     * @method PIXI.GraphicsFormat.uintToHex
+     * @private
+     * @param {string} hex The hex color
+     * @return {string}
+     */
+    private static uintToHex(color:number): string
+    {
+        let hex:string = color.toString(16);
+        while (hex.length < 6) {
+            hex = `0${hex}`;
+        }
+        return hex.replace(/([a-f0-9])\1([a-f0-9])\2([a-f0-9])\3/, "$1$2$3");
+    }
+
+    /**
      * Middleware to use for PIXI.loader
      * @static
      * @method PIXI.GraphicsFormat.middleware
