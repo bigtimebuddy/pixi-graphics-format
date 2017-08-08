@@ -168,7 +168,6 @@ export default class GraphicsFormat {
 
                 // Check to see if the path is closed (first point is last point)
                 const closed = points[0] === points[len - 2] && points[1] === points[len - 1];
-                console.log("holes", holes);
                 const numPoints = closed && holes.length === 0 ? (len / 2) - 1 : len / 2;
 
                 for (let i = 0; i < numPoints; i++) {
