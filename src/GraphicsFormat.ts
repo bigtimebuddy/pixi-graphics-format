@@ -112,12 +112,12 @@ export default class GraphicsFormat {
      * @param {PIXI.Graphics} graphics Object to convert to string
      * @return {string} Graphic serialized as string
      */
-    public static stringify(graphics:PIXI.Graphics): string {
+    public static stringify(graphics: PIXI.Graphics): string {
 
         // These are protected, which is why they are cast as 'any'
-        const graphicsData:PIXI.GraphicsData[] = (graphics as any).graphicsData;
+        const graphicsData: PIXI.GraphicsData[] = (graphics as any).graphicsData;
 
-        let buffer = '';
+        let buffer = "";
         let fillColor = 0x0;
         let fillAlpha = 1;
         let lineWidth = 0;
@@ -136,7 +136,10 @@ export default class GraphicsFormat {
                     buffer += `${fillAlpha} `;
                 }
             }
-            if (data.lineWidth > 0 && (data.lineWidth !== lineWidth || data.lineColor !== lineColor || data.lineAlpha !== lineAlpha)) {
+            if (data.lineWidth > 0 && (
+                    data.lineWidth !== lineWidth ||
+                    data.lineColor !== lineColor ||
+                    data.lineAlpha !== lineAlpha)) {
                 lineWidth = data.lineWidth;
                 lineColor = data.lineColor;
                 lineAlpha = data.lineAlpha;
@@ -150,7 +153,7 @@ export default class GraphicsFormat {
             }
 
             const {shape} = data;
-            const holes:PIXI.Polygon[] = (data as any).holes; // "holes" is protected
+            const holes: PIXI.Polygon[] = (data as any).holes; // "holes" is protected
 
             if (shape instanceof PIXI.Rectangle) {
                 buffer += `dr ${shape.x} ${shape.y} ${shape.width} ${shape.height} c `;
@@ -172,23 +175,23 @@ export default class GraphicsFormat {
 
                 for (let i = 0; i < numPoints; i++) {
                     const x = shape.points[i * 2];
-                    const y = shape.points[(i * 2) + 1];                    
-                    buffer += `${i === 0 ? 'm' : 'l'} ${x} ${y} `;
+                    const y = shape.points[(i * 2) + 1];
+                    buffer += `${i === 0 ? "m" : "l"} ${x} ${y} `;
                 }
 
                 // Check for holes and add them before closing the path
                 for (let k = 0; k < holes.length; k++) {
                     const hole = holes[k];
-                    const len = hole.points.length / 2;
-                    for (let l = 0; l < len; l++) {
+                    const pts = hole.points.length / 2;
+                    for (let l = 0; l < pts; l++) {
                         const x = hole.points[l * 2];
-                        const y = hole.points[(l * 2) + 1];                 
-                        buffer += `${l === 0 ? 'm' : 'l'} ${x} ${y} `;
+                        const y = hole.points[(l * 2) + 1];
+                        buffer += `${l === 0 ? "m" : "l"} ${x} ${y} `;
                     }
-                    buffer += 'h ';
+                    buffer += "h ";
                 }
                 if (closed) {
-                    buffer += 'c ';
+                    buffer += "c ";
                 }
             }
         }
@@ -203,9 +206,9 @@ export default class GraphicsFormat {
      * @param {string} hex The hex color
      * @return {string}
      */
-    private static uintToHex(color:number): string
+    private static uintToHex(color: number): string
     {
-        let hex:string = color.toString(16);
+        let hex: string = color.toString(16);
         while (hex.length < 6) {
             hex = `0${hex}`;
         }

@@ -10,7 +10,7 @@ describe("PIXI.GraphicsFormat", function() {
         const app = new PIXI.Application({
             width: 300,
             height: 300,
-            backgroundColor: 0xffffff
+            backgroundColor: 0xffffff,
         });
         document.body.appendChild(app.view);
         this.app = app;
