@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>pixi-graphics-format API Documentation</title>
+    
+    <meta name="description" content="Documentation for pixi-graphics-format library" />
+    
+        <meta name="keywords" content="pixi, pixijs, graphics, webgl, file, format, extension, pgf" />
+        <meta name="keyword" content="pixi, pixijs, graphics, webgl, file, format, extension, pgf" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":false},"applicationName":"PGF","footer":"Made with ♥ by Matt Karl (github.com/bigtimebuddy)","copyright":"PIXI Copyright &copy; 2017 Matt Karl.","linenums":false,"meta":{"title":"pixi-graphics-format API Documentation","description":"Documentation for pixi-graphics-format library","keyword":"pixi, pixijs, graphics, webgl, file, format, extension, pgf"}};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">PGF</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="PIXI">
+            <span class="title">
+                <a href="PIXI.html">PIXI</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="PIXI.GraphicsFormat">
+            <span class="title">
+                <a href="PIXI.GraphicsFormat.html">PIXI.GraphicsFormat</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="PIXI.GraphicsFormat.COMMANDS"><a href="PIXI.GraphicsFormat.html#.COMMANDS">COMMANDS</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="PIXI.GraphicsFormat.parse"><a href="PIXI.GraphicsFormat.html#.parse">parse</a></li>
+            
+                <li data-name="PIXI.GraphicsFormat.stringify"><a href="PIXI.GraphicsFormat.html#.stringify">stringify</a></li>
+            
+                <li data-name="PIXI.GraphicsFormat.toPrecision"><a href="PIXI.GraphicsFormat.html#.toPrecision">toPrecision</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="index.html">Index</h1>
+        
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article class="readme"><h1>pixi-graphics-format</h1><p>This library creates an interoperable file format for storing PixiJS Graphics. This data can be externalized as <code>*.pgf</code> files and be loaded using the PixiJS Loader. Also, this provides utilities for serializing and unserializing Graphics.</p>
+<h2>Installation</h2><p>Install using NPM or Yarn</p>
+<pre class="prettyprint source lang-bash"><code>npm install pixi-graphics-format</code></pre><pre class="prettyprint source lang-bash"><code>yarn add pixi-graphics-format</code></pre><h2>Setup</h2><p>If you're using Webpack or Rollup, make sure that <strong>pixi-graphics-format</strong> is included after <strong>pixi.js</strong>.</p>
+<pre class="prettyprint source lang-js"><code>import * as PIXI from 'pixi.js';
+import {GraphicsFormat} from 'pixi-graphics-format';</code></pre><p>Alternatively, if you're using the <code>PIXI</code> global object and not importing classes, use this:</p>
+<pre class="prettyprint source lang-js"><code>import 'pixi.js';
+import 'pixi-graphics-format';</code></pre><h2>Usage</h2><p>Using the parser to convert a graphics string to Graphics object:</p>
+<pre class="prettyprint source lang-js"><code>const graphic = PIXI.GraphicsFormat.parse(&quot;f #f00 dr 0 0 100 50 c&quot;);
+app.stage.addChild(graphic);</code></pre><p>Use the loader to load an external file as Graphics object. The file must be a text file with the <code>.pgf</code> file extension.</p>
+<pre class="prettyprint source lang-js"><code>PIXI.loader.add('example', 'file.pgf');
+PIXI.loader.load((loader, resources) => {
+    app.stage.addChild(resources.example.graphics); 
+});</code></pre><h2>License</h2><p>MIT License.</p></article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Aug 08 2017 11:11:16 GMT-0400 (EDT)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/jaguar.js"></script>
+</body>
+</html>
