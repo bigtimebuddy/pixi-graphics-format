@@ -49,6 +49,10 @@ PIXI.loader.load((loader, resources) => {
 });
 ```
 
+## Documentation
+
+Full API documentation can be found [here](https://bigtimebuddy.github.io/pixi-graphics-format/);
+
 ## License
 
 MIT License.
