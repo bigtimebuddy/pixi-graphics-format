@@ -33,7 +33,7 @@ describe("PIXI.GraphicsFormat", function() {
     });
 
     it("should execute a draw command", function() {
-        const result = PIXI.GraphicsFormat.parse("f #f00 dr 30 10 100 150");
+        const result = PIXI.GraphicsFormat.parse("f #f00 dr 30 10 100 150 c");
         expect(result).is.instanceof(PIXI.Graphics);
         const bounds = result.getLocalBounds();
         expect(bounds.x).to.equal(30);

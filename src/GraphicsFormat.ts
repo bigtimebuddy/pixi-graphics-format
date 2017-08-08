@@ -1,7 +1,11 @@
 /**
- * Parse *.pgf files for graphics
+ * Parse or serialize PIXI.Graphics objects with `*.pgf` files.
  * @class GraphicsFormat
  * @memberof PIXI
+ * @example
+ * const app = new PIXI.Application();
+ * const graphics = PIXI.GraphicsFormat.parse("f #f00 dr 30 10 100 150 c");
+ * app.stage.addChild(graphics);
  */
 export default class GraphicsFormat {
 
@@ -133,7 +137,7 @@ export default class GraphicsFormat {
                 fillAlpha = data.fillAlpha;
                 buffer += `f #${GraphicsFormat.uintToHex(fillColor)} `;
                 if (fillAlpha !== 1) {
-                    buffer += `${fillAlpha} `;
+                    buffer += `${GraphicsFormat.toPrecision(fillAlpha)} `;
                 }
             }
             if (data.lineWidth > 0 && (
@@ -143,12 +147,12 @@ export default class GraphicsFormat {
                 lineWidth = data.lineWidth;
                 lineColor = data.lineColor;
                 lineAlpha = data.lineAlpha;
-                buffer += `s ${lineWidth} `;
+                buffer += `s ${GraphicsFormat.toPrecision(lineWidth)} `;
                 if (lineColor > 0 || lineAlpha !== 1) {
                     buffer += `#${GraphicsFormat.uintToHex(lineColor)} `;
                 }
                 if (lineAlpha !== 1) {
-                    buffer += `${lineAlpha} `;
+                    buffer += `${GraphicsFormat.toPrecision(lineAlpha)} `;
                 }
             }
 
@@ -156,13 +160,24 @@ export default class GraphicsFormat {
             const holes: PIXI.Polygon[] = (data as any).holes; // "holes" is protected
 
             if (shape instanceof PIXI.Rectangle) {
-                buffer += `dr ${shape.x} ${shape.y} ${shape.width} ${shape.height} c `;
+                const x = GraphicsFormat.toPrecision(shape.x);
+                const y = GraphicsFormat.toPrecision(shape.y);
+                const width = GraphicsFormat.toPrecision(shape.width);
+                const height = GraphicsFormat.toPrecision(shape.height);
+                buffer += `dr ${x} ${y} ${width} ${height} c `;
             }
             else if (shape instanceof PIXI.Ellipse) {
-                buffer += `de ${shape.x} ${shape.y} ${shape.width} ${shape.height} c `;
+                const x = GraphicsFormat.toPrecision(shape.x);
+                const y = GraphicsFormat.toPrecision(shape.y);
+                const width = GraphicsFormat.toPrecision(shape.width);
+                const height = GraphicsFormat.toPrecision(shape.height);
+                buffer += `de ${x} ${y} ${width} ${height} c `;
             }
             else if (shape instanceof PIXI.Circle) {
-                buffer += `dc ${shape.x} ${shape.y} ${shape.radius} c `;
+                const x = GraphicsFormat.toPrecision(shape.x);
+                const y = GraphicsFormat.toPrecision(shape.y);
+                const radius = GraphicsFormat.toPrecision(shape.radius);
+                buffer += `dc ${x} ${y} ${radius} c `;
             }
             else if (shape instanceof PIXI.Polygon) {
 
@@ -174,8 +189,8 @@ export default class GraphicsFormat {
                 const numPoints = closed && holes.length === 0 ? (len / 2) - 1 : len / 2;
 
                 for (let i = 0; i < numPoints; i++) {
-                    const x = shape.points[i * 2];
-                    const y = shape.points[(i * 2) + 1];
+                    const x = GraphicsFormat.toPrecision(shape.points[i * 2]);
+                    const y = GraphicsFormat.toPrecision(shape.points[(i * 2) + 1]);
                     buffer += `${i === 0 ? "m" : "l"} ${x} ${y} `;
                 }
 
@@ -184,8 +199,8 @@ export default class GraphicsFormat {
                     const hole = holes[k];
                     const pts = hole.points.length / 2;
                     for (let l = 0; l < pts; l++) {
-                        const x = hole.points[l * 2];
-                        const y = hole.points[(l * 2) + 1];
+                        const x = GraphicsFormat.toPrecision(hole.points[l * 2]);
+                        const y = GraphicsFormat.toPrecision(hole.points[(l * 2) + 1]);
                         buffer += `${l === 0 ? "m" : "l"} ${x} ${y} `;
                     }
                     buffer += "h ";
@@ -248,5 +263,18 @@ export default class GraphicsFormat {
             hex = hex.replace(/([a-f0-9])/g, "$1$1");
         }
         return parseInt(hex, 16);
+    }
+
+    /**
+     * Round a number to decimal places
+     * @method PIXI.GraphicsFormat.toPrecision
+     * @static
+     * @param {number} val Number to round
+     * @param {number} [places=2] Number of decimal places to round to
+     * @return {number} Rounded number
+     */
+    private static toPrecision(val: number, places: number = 2): number {
+        const num = Math.pow(10, places);
+        return Math.round(val * num) / num;
     }
 }

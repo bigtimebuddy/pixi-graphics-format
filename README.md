@@ -1,6 +1,6 @@
 # pixi-graphics-format
 
-PixiJS Graphics file format and Loader middleware
+This library creates an interoperable file format for storing PixiJS Graphics. This data can be externalized as `*.pgf` files and be loaded using the PixiJS Loader. Also, this provides utilities for serializing and unserializing Graphics.
 
 ## Installation
 
@@ -36,7 +36,7 @@ import 'pixi-graphics-format';
 Using the parser to convert a graphics string to Graphics object:
 
 ```js
-const graphic = PIXI.GraphicsFormat.parse("f #f00 dr 0 0 100 50");
+const graphic = PIXI.GraphicsFormat.parse("f #f00 dr 0 0 100 50 c");
 app.stage.addChild(graphic);
 ```
 
