@@ -60,7 +60,6 @@
                 position:absolute;
                 top:40px;
                 bottom:0;
-                height:100%;
                 width:50%;
             }
             .stage { left:50%; }
@@ -74,22 +73,67 @@
             }
             textarea {
                 display: block;
-                height:100%;
-                width:100%;
                 overflow: auto;
+                position:absolute;
+                width:100%;
+                top:0;
+                bottom:60px;
+                -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-                padding:5px;
+                padding:0;
                 border:0;
                 font-family:monospace;
                 color:#333;
                 outline:none;
                 font-size:14px;
                 line-height:1.6;
+                background: #fff;
+                padding:5px;
+                appearance:none;
+                transition: all 0.3s;
+            }
+            textarea.invalid {
+                color:#300;
+                box-shadow:inset 0px 0px 20px rgba(0,0,0,0.2);
+                background:#fee;
+            }
+            button {
+                position: absolute;
+                bottom:0;
+                height:60px;
+                width:100%;
+                left:0;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                background: #3498db;
+                background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+                background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+                background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+                background-image: -o-linear-gradient(top, #3498db, #2980b9);
+                background-image: linear-gradient(to bottom, #3498db, #2980b9);
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 300;
+                color: #ffffff;
+                font-size: 16px;
+                padding: 10px 20px 10px 20px;
+                text-decoration: none;
+                border:0;
+                cursor: pointer;
+            }
+            button:hover {
+                background: #3cb0fd;
+                background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+                background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+                text-decoration: none;
             }
             #frame {
                 width:100%;
                 height:100%;
                 position: absolute;
+
             }
         </style>
     </head>
@@ -97,7 +141,10 @@
         <div id="frame">
             <h1 class="code">PGF</h1>
             <div class="splitscreen code">
-                <textarea id="graphicsData">f #6cf dr 10 10 300 200</textarea>
+                <textarea id="graphicsData">f #666
+s 4 #333
+dr 10 10 300 200</textarea>
+                <button id="saveButton">Save</button>
             </div>
             <h1 class="stage">PixiJS Preview</h1>
             <div class="splitscreen stage">
@@ -114,6 +161,7 @@
         const $ = document.querySelector.bind(document);
         const $view = $('#stage')
         const $graphicsData = $('#graphicsData');
+        const $saveButton = $("#saveButton");
 
         PIXI.utils.skipHello();
         const app = new PIXI.Application({
@@ -127,6 +175,23 @@
 
         const graphics = new PIXI.Graphics();
         app.stage.addChild(graphics);
+
+        $saveButton.addEventListener('click', function(event) {
+            if ($graphicsData.className === 'invalid') {
+                alert('PGF is invalid, fix errors before saving.');
+                return;
+            }
+            var blob = new Blob([$graphicsData.value], {type: 'octet/stream'});
+            const a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            const url = URL.createObjectURL(blob);
+            a.href = url;
+            a.download = 'untitled.pgf';
+            a.click();
+            URL.revokeObjectURL(url);
+            return false;      
+        });
 
         function resize() {
             const view = app.view;
@@ -144,7 +209,15 @@
             graphics.clear();
             const data = $graphicsData.value.trim().replace(/\n+$/, '');
             if (data) {
-                PIXI.GraphicsFormat.parse(data, graphics);
+                try {
+                    PIXI.GraphicsFormat.parse(data, graphics);
+                    $graphicsData.className = "";
+                }
+                catch (err) {
+                    if (err instanceof SyntaxError) {
+                        $graphicsData.className = "invalid";
+                    }
+                }
             }
         }
 
