@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 require("pixi.js");
 const path = require("path");
-const lib = require("../dist/pixi-graphics");
+const lib = require("../");
 
 describe("PIXI.GraphicsFormat", function() {
 

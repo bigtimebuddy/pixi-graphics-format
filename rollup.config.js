@@ -35,7 +35,7 @@ export default {
     moduleName: "__pixiGraphics",
     intro: 'if (typeof PIXI === "undefined") { throw "PixiJS required"; }',
     banner,
-    dest: `dist/pixi-graphics.js`,
+    dest: `dist/pixi-graphics-format.js`,
     format: "umd",
     plugins,
 };
