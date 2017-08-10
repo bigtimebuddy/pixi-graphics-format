@@ -13,22 +13,23 @@ export default class GraphicsFormat {
      * The aliases for draw commands
      * @name PIXI.GraphicsFormat.COMMANDS
      * @static
+     * @readonly
      * @type {Object}
-     * @property {string} c closePath
-     * @property {string} h addHole
-     * @property {string} m moveTo
-     * @property {string} l lineTo
-     * @property {string} q quadraticCurveTo
-     * @property {string} b bezierCurveTo
-     * @property {string} f beginFill
-     * @property {string} s lineStyle
-     * @property {string} dr drawRect
-     * @property {string} rr drawRoundedRect
-     * @property {string} rc drawRoundedRect
-     * @property {string} dc drawCircle
-     * @property {string} ar arc
-     * @property {string} at arcTo
-     * @property {string} de drawEllipse
+     * @property {string} c Alias for method `closePath`
+     * @property {string} h Alias for method `addHole`
+     * @property {string} m Alias for method `moveTo`
+     * @property {string} l Alias for method `lineTo`
+     * @property {string} q Alias for method `quadraticCurveTo`
+     * @property {string} b Alias for method `bezierCurveTo`
+     * @property {string} f Alias for method `beginFill`
+     * @property {string} s Alias for method `lineStyle`
+     * @property {string} dr Alias for method `drawRect`
+     * @property {string} rr Alias for method `drawRoundedRect`
+     * @property {string} rc Alias for method `drawRoundedRect`
+     * @property {string} dc Alias for method `drawCircle`
+     * @property {string} ar Alias for method `arc`
+     * @property {string} at Alias for method `arcTo`
+     * @property {string} de Alias for method `drawEllipse`
      */
     public static COMMANDS: {[id: string]: string} = {
         c: "closePath",
@@ -49,6 +50,26 @@ export default class GraphicsFormat {
     };
 
     /**
+     * Pattern to check that data is correct format.
+     * @name PIXI.GraphicsFormat.FORMAT
+     * @static
+     * @private
+     * @type {RexExp}
+     * @readonly
+     */
+    private static FORMAT: RegExp = /^((\s)?(c|h|m|l|q|b|f|s|dr|rr|rc|dc|ar|at|de)(\s[0-9\.#\-a-f]+)*(\s)?)*$/;
+
+    /**
+     * Pattern to check for valid keys
+     * @name PIXI.GraphicsFormat.VALID_KEYS
+     * @static
+     * @private
+     * @type {RexExp}
+     * @readonly
+     */
+    private static VALID_KEYS: RegExp = /^(c|h|m|l|q|b|f|s|dr|rr|rc|dc|ar|at|de)$/;
+
+    /**
      * The extension for PIXI Graphics
      * @readonly
      * @static
@@ -65,11 +86,16 @@ export default class GraphicsFormat {
      * @param {string} contents Commands to draw
      * @param {PIXI.Graphics} [graphics] Graphics object to use, if none is supplied will create new object.
      * @return {PIXI.Graphics} New graphics object created
+     * @throws {SyntaxError} Throws error if contents is not well formatted
      */
     public static parse(contents: string, graphics: PIXI.Graphics = new PIXI.Graphics()): PIXI.Graphics {
 
-        // each shape is a new line
-        const isCommand = /^[a-z]{1,2}$/;
+        contents = contents.replace(/\n/g, " ");
+
+        if (!this.FORMAT.test(contents)) {
+            throw new SyntaxError("Supplied content is invalid GraphicsFormat");
+        }
+
         const commands: Array<string|number> = contents.split(" ");
         for (let j = 0; j < commands.length; j++) {
             // Convert all numbers to floats, ignore colors
@@ -77,7 +103,7 @@ export default class GraphicsFormat {
             if (arg[0] === "#") {
                 commands[j] = GraphicsFormat.hexToUint(arg);
             }
-            else if (!isCommand.test(arg)) {
+            else if (!this.VALID_KEYS.test(arg)) {
                 commands[j] = parseFloat(arg);
             }
         }
@@ -90,7 +116,7 @@ export default class GraphicsFormat {
             const item = commands[i++];
             let resolvedName: string;
             if (typeof item === "string") {
-                resolvedName = GraphicsFormat.COMMANDS[item] || item;
+                resolvedName = this.COMMANDS[item] || item;
             }
             // At the end or at a command
             if (item === undefined || (graphics as any)[resolvedName]) {
@@ -268,6 +294,7 @@ export default class GraphicsFormat {
     /**
      * Round a number to decimal places
      * @method PIXI.GraphicsFormat.toPrecision
+     * @private
      * @static
      * @param {number} val Number to round
      * @param {number} [places=2] Number of decimal places to round to

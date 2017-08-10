@@ -49,6 +49,10 @@ PIXI.loader.load((loader, resources) => {
 });
 ```
 
+## Demo 
+
+See [demo and editor here](https://bigtimebuddy.github.io/pixi-graphics-format/example/) to preview `.pgf` files.
+
 ## Documentation
 
 Full API documentation can be found [here](https://bigtimebuddy.github.io/pixi-graphics-format/);
