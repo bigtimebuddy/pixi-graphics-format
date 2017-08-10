@@ -58,7 +58,7 @@ Provided is a JSFL script (see **tools/AdobeAnimate/PGF Exporter.jsfl**) used fo
 
 ## Demo 
 
-See [demo and editor here](https://bigtimebuddy.github.io/pixi-graphics-format/example/) to preview `.pgf` files.
+See [demo and editor here](https://bigtimebuddy.github.io/pixi-graphics-format/examples/) to preview `.pgf` files.
 
 ## Documentation
 

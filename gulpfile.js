@@ -15,7 +15,7 @@ gulp.task('deploy', function(done)
         src: [
             'dist/pixi-graphics.js',
             'dist/pixi-graphics.js.map',
-            'example/**',
+            'examples/**',
             'docs/**'
         ]
     };
