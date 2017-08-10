@@ -1,7 +1,7 @@
 /*!
  * pixi-graphics-format - v1.0.0
  * https://github.com/bigtimebuddy/pixi-graphics-format
- * Compiled Thu, 10 Aug 2017 21:35:00 UTC
+ * Compiled Thu, 10 Aug 2017 21:48:40 UTC
  *
  * pixi-graphics-format is licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license
