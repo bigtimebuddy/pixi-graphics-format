@@ -17,7 +17,10 @@ var MESSAGES = {
 };
 
 /**
- * Create new pseudo-class for exporting graphics to PGF files
+ * Exporting graphics to PGF file format. This is designed for Adobe Animate CC.
+ * It's designed to export anything that is selected on the stage. Only vector graphics will 
+ * be exported. All other symbols, bitmaps, etc will be ignored. Some features like
+ * stroke styles, gradients and bitmap fills are not supported.
  * @class PGFExporter
  */
 var PGFExporter = function() {
