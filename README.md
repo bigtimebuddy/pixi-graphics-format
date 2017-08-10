@@ -1,5 +1,7 @@
 # pixi-graphics-format
 
+[![Build Status](https://travis-ci.org/bigtimebuddy/pixi-graphics-format.svg?branch=master)](https://travis-ci.org/bigtimebuddy/pixi-graphics-format)
+
 This library creates an interoperable file format for storing PixiJS Graphics. This data can be externalized as `*.pgf` files and be loaded using the PixiJS Loader. Also, this provides utilities for serializing and unserializing Graphics.
 
 ## Installation
