@@ -8,3 +8,16 @@ gulp.task('comments', function()
         .pipe(comments())
         .pipe(gulp.dest('.docs'));
 });
+
+gulp.task('deploy', function(done)
+{
+    const options = {
+        src: [
+            'dist/pixi-graphics.js',
+            'dist/pixi-graphics.js.map',
+            'example/**',
+            'docs/**'
+        ]
+    };
+    ghpages.publish(__dirname, options, done);
+});
