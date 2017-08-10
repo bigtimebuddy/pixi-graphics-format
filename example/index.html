@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>pixi-graphics-format Preview Tool</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <script src="https://cdn.rawgit.com/bensmithett/dragster/gh-pages/lib/dragster.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+        <style>
+            body {
+                background-color:#ddd;
+                text-align: center;
+                overflow: hidden;
+                margin:0;
+                padding:0;
+            }
+            .drag {
+                pointer-events: none;
+                display:none;
+                transition:background 0.3s;
+                background: transparent;
+            }
+            .drag-message {
+                color:#fff;
+                transform:translate(-50%, -50%);
+                top:50%;
+                left:50%;
+                position:absolute;
+                font-size:30px;
+            }
+            .dragover .drag {
+                display:block;
+                position: absolute;
+                margin-top:40px;
+                width:100%;
+                height:100%;
+                background:rgba(0,0,0,0.5);
+                font-family: 'Open Sans', sans-serif;
+                z-index: 2;
+            }
+            h1 {
+                position:absolute;
+                height:40px;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 300;
+                top:0;
+                width:50%;
+                margin:0;
+                font-size:20px;
+                line-height: 2;
+                color: #fff;
+                background: #45484d;
+                background: -moz-linear-gradient(top, #45484d 0%, #000000 100%);
+                background: -webkit-linear-gradient(top, #45484d 0%,#000000 100%);
+                background: linear-gradient(to bottom, #45484d 0%,#000000 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 );
+            }
+            .splitscreen {
+                position:absolute;
+                top:40px;
+                bottom:0;
+                height:100%;
+                width:50%;
+            }
+            .stage { left:50%; }
+            .code { left:0; }
+            div.code {
+                border-right: 1px solid rgba(0, 0, 0, 0.1);
+                z-index: 1;
+            }
+            canvas {
+                display:block;
+            }
+            textarea {
+                display: block;
+                height:100%;
+                width:100%;
+                overflow: auto;
+                box-sizing: border-box;
+                padding:5px;
+                border:0;
+                font-family:monospace;
+                color:#333;
+                outline:none;
+                font-size:14px;
+                line-height:1.6;
+            }
+            #frame {
+                width:100%;
+                height:100%;
+                position: absolute;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="frame">
+            <h1 class="code">PGF</h1>
+            <div class="splitscreen code">
+                <textarea id="graphicsData">f #6cf dr 10 10 300 200</textarea>
+            </div>
+            <h1 class="stage">PixiJS Preview</h1>
+            <div class="splitscreen stage">
+                <canvas id="stage" width="550" height="400"></canvas>
+            </div>
+            <div class="drag">
+                <div class="drag-message">Drag and Drop PGF Files</div>
+            </div>
+        </div>
+        <script src="https://pixijs.download/release/pixi.js"></script>
+        <script src="../dist/pixi-graphics.js"></script>
+        <script>
+
+        const $ = document.querySelector.bind(document);
+        const $view = $('#stage')
+        const $graphicsData = $('#graphicsData');
+
+        PIXI.utils.skipHello();
+        const app = new PIXI.Application({
+            width: 550,
+            height: 400,
+            view: $view,
+            backgroundColor: 0xeeeeee,
+            roundPixels: true,
+            resolution: devicePixelRatio || 1
+        });
+
+        const graphics = new PIXI.Graphics();
+        app.stage.addChild(graphics);
+
+        function resize() {
+            const view = app.view;
+            const width = view.parentNode.clientWidth;
+            const height = view.parentNode.clientHeight;
+            app.renderer.resize(width, height);
+            app.render();
+        }
+
+        function autoFocus() {
+            $graphicsData.focus();
+        }
+
+        function render() {
+            graphics.clear();
+            const data = $graphicsData.value.trim().replace(/\n+$/, '');
+            if (data) {
+                PIXI.GraphicsFormat.parse(data, graphics);
+            }
+        }
+
+        window.addEventListener('resize', resize);
+        document.body.addEventListener('mouseup', autoFocus);
+        $graphicsData.addEventListener('input', render);
+
+        resize();
+        render();
+        autoFocus();
+
+        const $frame = $("#frame");
+
+        new Dragster($frame);
+
+        document.addEventListener("dragster:enter", function(e){
+            e.target.classList.add("dragover");
+        });
+
+        document.addEventListener("dragster:leave", function(e) {
+            e.target.classList.remove("dragover");
+        });
+
+        // Disable default events
+        document.addEventListener("dragstart", function(e) { e.preventDefault() });
+        document.addEventListener("dragleave", function(e) { e.preventDefault() });
+        document.addEventListener("dragover", function(e) { e.preventDefault() });
+
+        // Handle drop
+        document.addEventListener("drop", function(event) {
+            event.preventDefault();
+            $frame.className = "";
+            var fileList = event.dataTransfer.files;
+            if (fileList.length > 1)
+            {
+                alert("Only one file at a time");
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $graphicsData.innerHTML = e.target.result;
+                render();
+            };
+            reader.readAsText(fileList[0]);
+        });
+
+        </script>
+    </body>
+</html>
