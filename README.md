@@ -30,7 +30,6 @@ import 'pixi.js';
 import 'pixi-graphics-format';
 ```
 
-
 ## Usage
 
 Using the parser to convert a graphics string to Graphics object:
@@ -45,9 +44,15 @@ Use the loader to load an external file as Graphics object. The file must be a t
 ```js
 PIXI.loader.add('example', 'file.pgf');
 PIXI.loader.load((loader, resources) => {
-    app.stage.addChild(resources.example.graphics); 
+    app.stage.addChild(resources.example.graphics);
 });
 ```
+
+## Tools
+
+### Adobe Animate
+
+Provided is a JSFL script (see **tools/AdobeAnimate/PGF Exporter.jsfl**) used for exporting vector graphics from Adobe Animate CC (or Flash CS5+). For information installing JSFL scripts, see [here](http://help.adobe.com/en_US/flash/cs/extend/WS5b3ccc516d4fbf351e63e3d118a9024f3f-7fe8CS5.html#WS5b3ccc516d4fbf351e63e3d118a9024f3f-7fe3CS5).
 
 ## Demo 
 
