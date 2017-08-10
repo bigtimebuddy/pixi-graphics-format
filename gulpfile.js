@@ -13,8 +13,8 @@ gulp.task('deploy', function(done)
 {
     const options = {
         src: [
-            'dist/pixi-graphics.js',
-            'dist/pixi-graphics.js.map',
+            'dist/pixi-graphics-format.js',
+            'dist/pixi-graphics-format.js.map',
             'examples/**',
             'docs/**'
         ]
